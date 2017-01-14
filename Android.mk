@@ -28,6 +28,17 @@ endif
 # Build libv8 and d8
 
 ENABLE_V8_SNAPSHOT = true
+ifeq ($(HOST_OS_IS_LXSS),true)
+ifneq ($(TARGET_IS_64_BIT),true)
+ENABLE_V8_SNAPSHOT = false
+$(info Disabling v8 snapshots on lxss because target is 32 bit)
+endif
+ifneq ($(2ND_TARGET_IS_64_BIT),true)
+ENABLE_V8_SNAPSHOT = false
+$(info Disabling v8 snapshots on lxss because 2nd target is 32 bit)
+endif
+endif
+
 mksnapshot_arch := $(TARGET_ARCH)
 ifeq ($(HOST_IS_64_BIT),true)
 ifeq ($(TARGET_IS_64_BIT),true)
